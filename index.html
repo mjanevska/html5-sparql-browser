@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SPARQLfaceted.com</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script> -->
+	<script src="js/sparqlfaceted.js"></script>
+	<script src="js/urlEncode.js"></script>
+	<script src="js/saveRes.js"></script>
+	<script src="js/sparqlQueries.js"></script>
+	<script src="js/jquery.dataTables.js"></script>
+	<script src="js/triplestore.js"></script>
+
+	<div>
+		<h1>SPARQL faceted browser</h1>
+	</div>
+	
+	<div id="main">
+		<div class="main-entry" id="query-container">
+			<h3>Search text</h3>
+			<input id="query" title="Enter text here." size="60%" autofocus ></input>
+		</div>
+		<div class="main-entry">
+			<h3>Endpoint URL</h3>
+			<input type="url" id="endpoint" size="60%" list="browsers" />
+			<datalist id="browsers">
+			  <option value="http://dbpedia.org/sparql">
+			  <option value="http://data.linkedu.eu/kis/query">
+			  <option value="http://data.uni-muenster.de/sparql">
+			  <option value="http://meco.l3s.uni-hannover.de:8890/sparql">
+			  <option value="http://aemet.linkeddata.es/sparql">
+			  <option value="http://drugbank.bio2rdf.org/sparql">
+			  <option value="http://biomodels.bio2rdf.org/sparql">
+			  <option value="http://healthdata.tw.rpi.edu/sparql">
+			</datalist>
+		</div>
+		<div class="controls">
+			<button id="execSearch">Search</button>
+			<button id="checkES">Check endpoint status</button>
+			<button id="clear">Drop Table</button>
+		</div>
+		<div id="statusOutput">&nbsp;</div>
+		<div class="container">
+			<h3>Results</h3>
+			<a href="saved.html" target="_blank">Saved</a>
+			<button id="clearSaved">Clear all saved</button>
+			<div id="resDescription">&nbsp;</div>	
+			<details>
+		    	<summary>More details</summary>
+		    	<div id="limitedRes">&nbsp;</div>
+				<br>
+				<div id="saveForm" style="visibility:hidden;">
+					<b>Save your results</b>
+					<table>
+					<tr><td>Mnemonical name:</td><td><input id="mName" type="text"></input></td></tr>
+					<tr><td>Graph name</td><td><input id="gName" type="text"></input></td></tr>
+					<tr><td>Description:</td><td><textarea id="desc" ></textarea></td></tr>
+					</table>
+					<button onclick = "saveRes()">Save</button>
+				</div>
+		    </details>
+			<table id="results" class="display" width="100%"></table>
+		</div>
+	</div>
+	<div id='loadingmessage' style='display:none'>
+		<img src='img/loadinggraphic.gif'/>
+	</div>
+</body>
+</html>
