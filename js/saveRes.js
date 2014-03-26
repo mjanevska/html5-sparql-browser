@@ -19,7 +19,7 @@ function saveRes(){
 	newItem.push(resultArray[1]);
 	newItem.push(resultArray[2]);
 	newItem.push(resultArray[3]);
-	console.log(resultArray[3]);
+	// console.log(resultArray[3]);
     //newItem.push(JSONdata);
 	savedItems2.push(newItem);
 	localStorage.setItem("savedData", JSON.stringify(savedItems2));

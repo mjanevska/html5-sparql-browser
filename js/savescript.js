@@ -4,10 +4,21 @@ $(document).ready(function(){
 	if(savedItems === null) { document.getElementById("newPage").innerHTML = "No saved results";}
 	else { drawSavedData(savedItems); }
 
-	$("#download").click(function() {
-    var json = localStorage.getItem("JSONdata");
-   // var json = CSV2JSON(csv);
-    window.open("data:text/json;charset=utf-8," + escape(json))
+	$("#saveFile").click(function(event){
+		var text = document.getElementById("textArea").value;
+		if(text || text.length !== 0) { 
+			// var e = document.getElementById("formats");
+			// var choice = e.options[e.selectedIndex].value;
+			event.preventDefault();
+			//var BB = new Blob();
+			saveAs(
+				  new Blob(
+					  [text || text.placeholder]
+					, {type: "text/plain;charset=" + document.characterSet}
+				)
+				, (document.getElementById("html-filename").value || document.getElementById("html-filename").placeholder) + ".file"
+			);
+		}
 	});
 
 });
@@ -52,8 +63,8 @@ function getTableDetails(index){
 		var valueOftriple = removeTags(triples[y][2]);
 		table+='<tr id="'+y+'" style="background-color:#DBDBFF;"><td>'+triples[y][0]+'  </td><td>'+triples[y][1]+'</td><td>'+valueOftriple+'</td><td><img src="img/edit.png" class="btnEdit"/><img src="img/delete.png" class="btnDelete"/></td></tr>';
 	}
-	table+='<tr style="background-color:#DBDBFF;"><td colspan="4"><button onclick = "goBack()">Back</button><button id="showFormatData" onclick="showFormatData('+index+')">Show</button>';
-	table+='<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "2">JTriples</option><option value = "3">CSV</option><option value = "4">TSV</option></select></td></tr>';
+	table+='<tr style="background-color:#DBDBFF;"><td colspan="4"><button onclick = "goBack()">Back</button>';
+	table+='<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "2">JTriples</option><option value = "3">CSV</option><option value = "4">TSV</option></select><button id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
 	table +='</table><br>';	
 	document.getElementById("objectSaved").innerHTML = table;
 	document.getElementById("newPage").innerHTML ="";
@@ -170,6 +181,7 @@ function showFormatData(index){
  	else {
  		document.getElementById("textArea").value = "Test";
  	}
+ 	document.getElementById("saveFile").disabled = false;
 }
 
 function JSON2CSV(jsonStrObj){
@@ -233,3 +245,18 @@ function JSON2XML(o, tab) {
   	//return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
    return tab ? xml.replace(/\t\t\t/g, tab) : xml.replace(/\t|\n/g, "");
 }
+
+// function SaveDataFile(){
+// 	var text = document.getElementById("textArea").value;
+// 	$("html-options").addEventListener("submit", function(event) {
+// 		event.preventDefault();
+// 		var BB = get_blob();
+// 		saveAs(
+// 			  new BB(
+// 				  [text || text.placeholder]
+// 				, {type: "text/plain;charset=" + document.characterSet}
+// 			)
+// 			, (html_filename.value || html_filename.placeholder) + ".txt"
+// 		);
+// 	}, false);
+// }

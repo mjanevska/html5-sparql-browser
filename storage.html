@@ -16,6 +16,7 @@
 	<script src="js/triplestore.js"></script>
 	<script src="js/savescript.js"></script>
 	<script src="js/manageTable.js"></script>
+	<script src="js/FileSaver.js"></script>
 	<div id="objectSaved"></div>
 	<div id="newPage"></div>
 	<div id="formatData">
@@ -24,6 +25,10 @@
             <option value = "2">CSV</option>
 		</select> -->
 		<textarea id="textArea" style="width: 100%; height: 300px;"></textarea>
+		<form id="html-options">
+            <label>Filename: <input type="text" class="filename" id="html-filename" placeholder="storageFile"/></label>
+            <input id="saveFile" type="submit" value="Download" disabled/>
+        </form>
 	</div>
 	<div id='loadingmessage' style='display:none'>
 		<img src='img/loadinggraphic.gif'/>
