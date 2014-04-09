@@ -1,0 +1,18 @@
+@import url(http://fonts.googleapis.com/css?family=Gilda+Display);
+
+body {
+	background: url("../img/background.png");
+	padding: 10px;
+	font-family: "Trebuchet MS" !important;
+}
+body h1 {
+	font-weight: 800;
+}
+input {
+	max-width: 343px;
+}
+
+body .container {
+	width: auto;
+	padding: 0;
+}
