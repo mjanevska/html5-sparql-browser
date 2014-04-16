@@ -27,22 +27,22 @@ function drawSavedData(savedItems){
 
 	for (var i = 0; i < savedItems.length; i++) {
 		var storeTable = savedItems[i];
-
-		var table = '<table border="1" id="'+i+'">';
-		table+='<tr style="background-color:#AFAFCC;"><th>Mnemonical name</th><td colspan="2">'+storeTable[0]+'</td></tr>';
-		table+='<tr style="background-color:#AFAFCC;"><th>Graph name</th><td colspan="2">'+storeTable[1]+'</td></tr>';
-		table+='<tr style="background-color:#AFAFCC;"><th>Description</th><td colspan="2">'+storeTable[2]+'</td></tr>';
-		table+='<tr style="background-color:#DBDBFF;"><th>Entity</th><th>Relation</th><th>Value</td></tr>';
+		var table = '<table border="1" id="'+i+'" background="img/table.png">';
+		table+='<tr><th>Mnemonical name</th><td colspan="2">'+storeTable[0]+'</td></tr>';
+		table+='<tr><th>Graph name</th><td colspan="2">'+storeTable[1]+'</td></tr>';
+		table+='<tr><th>Description</th><td colspan="2">'+storeTable[2]+'</td></tr>';
+		table+='<tr><th>Entity</th><th>Relation</th><th>Value</td></tr>';
 
 		var triples = storeTable[3];
 		for(y in triples){
 			if(y <= 9){
 				var last = triples[y][2];
-				table+='<tr style="background-color:#DBDBFF;"><td>'+triples[y][0]+'</td><td>'+triples[y][1]+'</td><td>'+ last.substring(0,170) +'</td></tr>';
+				table+='<tr><td>'+triples[y][0]+'</td><td>'+triples[y][1]+'</td><td>'+ last.substring(0,170) +'</td></tr>';
 			}
 		}
-		table+='<tr style="background-color:#DBDBFF;"><td colspan="3"><button onclick="getTableDetails(\'' + i + '\')">Details</button>';
-		table+='<button onclick="getCleanRefresh(\'' + i + '\')">Clean Refresh</button><button onclick="deleteTable(\'' + i + '\')">Delete</button></td></tr>';
+		table+='<tr><td colspan="3"><button onclick="getTableDetails(\'' + i + '\')" class="btn btn-primary btn-sm">Details</button>&nbsp;';
+		table+='<button class="btn btn-info btn-sm" onclick="getUpdateRefresh(\'' + i + '\')">Update Refresh</button>&nbsp;';
+		table+='<button class="btn btn-info btn-sm" onclick="getCleanRefresh(\'' + i + '\')">Clean Refresh</button>&nbsp;<button class="btn btn-warning btn-sm" onclick="deleteTable(\'' + i + '\')">Delete</button></td></tr>';
 		table +='</table><br>';
 		$('#newPage').append(table);
 		document.getElementById("formatData").style.visibility = "hidden";
@@ -52,19 +52,19 @@ function drawSavedData(savedItems){
 function getTableDetails(index){
 	var savedItems = JSON.parse(localStorage.getItem("savedData"));
 	var storeTable = savedItems[index];
-	var table = '<table border="1" id="'+index+'">';
-	table+='<tr style="background-color:#AFAFCC;"><th>Mnemonical name</th><td colspan="2">'+storeTable[0]+'</td><td id="0"><img src="img/edit.png" class="btnEditHeader"/></td></tr>';
-	table+='<tr style="background-color:#AFAFCC;"><th>Graph name</th><td colspan="2">'+storeTable[1]+'</td><td id="1"><img src="img/edit.png" class="btnEditHeader"/></td></tr>';
-	table+='<tr style="background-color:#AFAFCC;"><th>Description</th><td colspan="2">'+storeTable[2]+'</td><td id="2"><img src="img/edit.png" class="btnEditHeader"/></td></tr>';
-	table+='<tr style="background-color:#DBDBFF;"><th>Entity</th><th>Relation</th><th colspan="2" >Value</td></tr>';
-	//komentirano denes>>>>>
+	var table = '<table border="1" id="'+index+'" background="img/table.png">';
+	table+='<tr><th>Mnemonical name</th><td colspan="2">'+storeTable[0]+'</td><td id="0"><img src="img/edit.png" class="btnEditHeader"/></td></tr>';
+	table+='<tr><th>Graph name</th><td colspan="2">'+storeTable[1]+'</td><td id="1"><img src="img/edit.png" class="btnEditHeader"/></td></tr>';
+	table+='<tr><th>Description</th><td colspan="2">'+storeTable[2]+'</td><td id="2"><img src="img/edit.png" class="btnEditHeader"/></td></tr>';
+	table+='<tr><th>Entity</th><th>Relation</th><th colspan="2" >Value</td></tr>';
+	
 	var triples = storeTable[3];
 	for(y in triples){
 		var valueOftriple = removeTags(triples[y][2]);
-		table+='<tr id="'+y+'" style="background-color:#DBDBFF;"><td>'+triples[y][0]+'  </td><td>'+triples[y][1]+'</td><td>'+valueOftriple+'</td><td><img src="img/edit.png" class="btnEdit"/><img src="img/delete.png" class="btnDelete"/></td></tr>';
+		table+='<tr id="'+y+'"><td>'+triples[y][0]+'  </td><td>'+triples[y][1]+'</td><td>'+valueOftriple+'</td><td><img src="img/edit.png" class="btnEdit"/><img src="img/delete.png" class="btnDelete"/></td></tr>';
 	}
-	table+='<tr style="background-color:#DBDBFF;"><td colspan="4"><button onclick = "goBack()">Back</button>';
-	table+='<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "2">JTriples</option><option value = "3">CSV</option><option value = "4">TSV</option></select><button id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
+	table+='<tr><td colspan="4"><button class="btn btn-primary btn-sm" onclick = "goBack()">Back</button>';
+	table+='&nbsp;<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "2">JTriples</option><option value = "3">CSV</option><option value = "4">TSV</option></select>&nbsp;<button class="btn btn-info btn-sm" id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
 	table +='</table><br>';	
 	document.getElementById("objectSaved").innerHTML = table;
 	document.getElementById("newPage").innerHTML ="";
@@ -82,13 +82,13 @@ function getTableDetails(index){
 };
 
 function deleteTable(index){
-	var result = confirm("Delete the table?");
-	if (result==true) {
+	$('#mydeleteModal').modal('show');
+	$('#mydeleteModal button.btn-primary').click(function(){
+		$('#mydeleteModal').modal('hide');
 		var savedItems = JSON.parse(localStorage.getItem("savedData"));
 		savedItems.splice(index,1);
 		localStorage.setItem("savedData", JSON.stringify(savedItems));
-	}
-	goBack();
+	});
 };
 
 function goBack(){
@@ -103,7 +103,6 @@ function goBack(){
 
 
 //get clean refresh function
-
 function getCleanRefresh(index){
     var savedItems = JSON.parse(localStorage.getItem("savedData"));
     var storeTable = savedItems[index];
@@ -120,8 +119,8 @@ function getCleanRefresh(index){
     else {
         var queryUrl = endpointURL + "?default-graph-uri=&query="+$.URLEncode(query)+"&format=json&timeout=30000&debug=on";
     }
-    
-    $('#loadingmessage').show();  // show the loading message.
+    $('#processing-modal').modal('show');
+    // show the loading message.
 
     $.ajax({
       dataType: "jsonp",
@@ -130,16 +129,76 @@ function getCleanRefresh(index){
 
             var sTriples = formatSaveData(data);
             storeTable[3] = sTriples;
-            storeTable[6] = data;
+            storeTable[6] = JSON.stringify(data);
             savedItems[index] = storeTable;
             localStorage.setItem("savedData", JSON.stringify(savedItems));
-            $('#loadingmessage').hide();
-            goBack();  // hide the loading message.
-            alert("Data successfully refreshed");
+            $('#processing-modal').modal('hide');
+            $('#myModal').modal('show');
         }
     });
 };
 
+
+//get update refresh function
+
+function getUpdateRefresh(index){
+    var savedItems = JSON.parse(localStorage.getItem("savedData"));
+    var storeTable = savedItems[index];
+    // var trip = storeTable[3];
+    var st = ArrtoTstore(storeTable[3]);
+    var searchText = storeTable[4];
+    var endpointURL = storeTable[5];
+    var jsondata1 = JSON.parse(storeTable[6]);
+    var dbpediaQuery = "select reduced ?s ?p ?o where {?s ?p ?o . ?p ?k ?type . filter ( regex(?o, \"" + searchText +"\", \"i\") && (?type = owl:DatatypeProperty || ?type = rdf:Property))} LIMIT 1000";
+    var dbpediaQueryUrl = endpointURL + "?default-graph-uri=http%3A%2F%2Fdbpedia.org&query="+$.URLEncode(dbpediaQuery)+"&format=json&timeout=30000&debug=on";
+    var query = "select reduced ?s ?p ?o where { ?s ?p ?o. filter(regex(?o, \"" + searchText +"\", \"i\"))} LIMIT 1000";
+    
+    if(endpointURL.indexOf("http://dbpedia.org/") !== -1) {
+        var queryUrl = dbpediaQueryUrl;
+    }
+    else {
+        var queryUrl = endpointURL + "?default-graph-uri=&query="+$.URLEncode(query)+"&format=json&timeout=30000&debug=on";
+    }
+    $('#processing-modal').modal('show');
+    // show the loading message.
+
+    $.ajax({
+      dataType: "jsonp",
+      url: queryUrl,
+      success: function(data) {
+
+            var mArray = formatSaveData(data);
+            for(t in mArray){
+        		var triple = mArray[t];
+        		st.add(triple[0], triple[1], triple[2]);
+    		}
+            storeTable[3] = removeDuplicates(TstoretoArr(st));
+            storeTable[6] = JSON.stringify(data);
+            savedItems[index] = storeTable;
+            localStorage.setItem("savedData", JSON.stringify(savedItems));
+            $('#processing-modal').modal('hide');
+            $('#myModal').modal('show');
+        }
+    });
+};
+
+function removeDuplicates(mArray){
+	for(var i=0; i < mArray.length - 1; i++){
+		if(arraysIdentical(mArray[i], mArray[i+1])){
+			mArray.splice(i, 1);
+		}
+	}
+	return mArray;
+};
+
+function arraysIdentical(a, b) {
+    var i = a.length;
+    if (i !== b.length) return false;
+    while (i--) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+};
 
 function removeTags(value){
 	 return value.replace(/<\/.*?>/g, '');
@@ -245,18 +304,3 @@ function JSON2XML(o, tab) {
   	//return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
    return tab ? xml.replace(/\t\t\t/g, tab) : xml.replace(/\t|\n/g, "");
 }
-
-// function SaveDataFile(){
-// 	var text = document.getElementById("textArea").value;
-// 	$("html-options").addEventListener("submit", function(event) {
-// 		event.preventDefault();
-// 		var BB = get_blob();
-// 		saveAs(
-// 			  new BB(
-// 				  [text || text.placeholder]
-// 				, {type: "text/plain;charset=" + document.characterSet}
-// 			)
-// 			, (html_filename.value || html_filename.placeholder) + ".txt"
-// 		);
-// 	}, false);
-// }

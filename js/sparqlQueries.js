@@ -10,14 +10,13 @@ function executeQuery(searchText, endpointURL) {
 		var queryUrl = endpointURL + "?default-graph-uri=&query="+$.URLEncode(query)+"&format=json&timeout=30000&debug=on";
 	}
 	
-	$('#loadingmessage').show();  // show the loading message.
+	// show the loading message.
+	$('#processing-modal').modal('show');
 	$.ajax({
 	  dataType: "jsonp",
 	  url: queryUrl,
 	  success: function(data) {
 
-			//localStorage.setItem("ajaxData", data.results.bindings);
-			// localStorage.setItem("JSONdata", JSON.stringify(data));
 			var sTriples = formatSaveData(data);
 			var queryData = [];
 			queryData.push(sTriples);
@@ -38,12 +37,12 @@ function executeQuery(searchText, endpointURL) {
 				  { "sTitle": "Value" }
 				]
 			});
-			$('#loadingmessage').hide();  // hide the loading message.
+			// hide the loading message.
+			$('#processing-modal').modal('hide');
 			document.getElementById("saveForm").style.visibility="visible";
 		}
 	});
-	//document.getElementById("saveForm").style.visibility="visible";
- 	document.getElementById("limitedRes").innerHTML = "Displaying limited results (max 1000)" + '<button onclick = "getAllRes()" title="May be slow...">Get all results</button>';
+ 	document.getElementById("limitedRes").innerHTML = "Displaying limited results (max 1000)" + '<button onclick = "getAllRes()" class="btn btn-primary" title="May be slow...">Get all results</button>';
  	document.getElementById("resDescription").innerHTML = 'Entities that have ' + '<a href="#relations" onclick = "showRelations()"> any Relation </a>'+ ' with Value <b>"'+ searchText +'"</b>';
 }
 
@@ -60,7 +59,7 @@ function executeMoreQuery(searchText, endpointURL) {
 		var queryUrl = endpointURL + "?default-graph-uri=&query="+$.URLEncode(query)+"&format=json&timeout=30000&debug=on";
 	}
 	
-	$('#loadingmessage').show();  // show the loading message.
+	$('#processing-modal').modal('show');  // show the loading message.
 	$.ajax({
 	  dataType: "jsonp",
 	  url: queryUrl,
@@ -87,7 +86,8 @@ function executeMoreQuery(searchText, endpointURL) {
 				  { "sTitle": "Value" }
 				]
 			});
-			$('#loadingmessage').hide();  // hide the loading message.
+			
+			$('#processing-modal').modal('hide'); // hide the loading message.
 		}
 	});
 	document.getElementById("saveForm").style.visibility="visible";

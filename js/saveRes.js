@@ -4,29 +4,30 @@ function saveRes(){
 	if(savedItems === null) { savedItems2 = []; }
 	else { savedItems2 = JSON.parse(savedItems); }
 	var newItem = [];
-	//resultArray = [ [s1, p1, o1], [s2, p2, o2], ... ]
-  //var JSONdata = JSON.parse(localStorage.getItem("JSONdata"));
-  //console.log(JSONdata);
-  var resArr = localStorage.getItem("ajaxData");
-  var resultArray = JSON.parse(resArr);
+
+  	var resArr = localStorage.getItem("ajaxData");
+  	var resultArray = JSON.parse(resArr);
 	var mnemonicName = document.getElementById("mName").value;
 	var graphName = document.getElementById("gName").value;
 	var description = document.getElementById("desc").value;
 	newItem.push(mnemonicName);
 	newItem.push(graphName);
 	newItem.push(description);
+	//resultArray[0] = [ [s1, p1, o1], [s2, p2, o2], ... ]
 	newItem.push(resultArray[0]);
+	//resultArray[1] = searchtext
 	newItem.push(resultArray[1]);
+	//resultArray[2] = endpoint url
 	newItem.push(resultArray[2]);
+	//resultArray[1] = json data
 	newItem.push(resultArray[3]);
-	// console.log(resultArray[3]);
-    //newItem.push(JSONdata);
+
 	savedItems2.push(newItem);
 	localStorage.setItem("savedData", JSON.stringify(savedItems2));
 	$('#mName').val('');
 	$('#gName').val('');
 	$('#desc').val('');
-	alert("Data successfully saved.");
+	$('#myModal').modal('show');
  }
 
 function formatSaveData(saveResults){

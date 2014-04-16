@@ -1,5 +1,3 @@
- //<![CDATA[
-
 $(document).ready(function(){
 	
 	$("#execSearch").click(function(event){
@@ -20,6 +18,7 @@ $(document).ready(function(){
 		document.getElementById("limitedRes").innerHTML = "";
  		document.getElementById("resDescription").innerHTML = "";
  		document.getElementById("limitedRes").innerHTML = "";
+ 		document.getElementById("saveForm").style.visibility="hidden";
  	});
 
 	$("#execMore").click(function(event){
@@ -32,26 +31,6 @@ $(document).ready(function(){
 
 	$("#clearSaved").click(function(event){
 		localStorage.clear();
-	});
-	
-	$("#checkES").click(function(event){
-      var url = document.getElementById("endpoint").value;
-      $.ajax(url,
-      {
-        error:function (xhr, ajaxOptions, thrownError){
-          alert(xhr.status);
-		  document.getElementById("statusOutput").innerHTML = "As of " + (new Date()).toLocaleString() + ", the server status code is " + xhr.status;
-           switch (xhr.status) {
-              case 404:
-                    // Desired Action.
-            }
-		},
- 
-        complete: function(xhr, statusText){
-           alert(xhr.status);
-		   document.getElementById("statusOutput").innerHTML = "As of " + (new Date()).toLocaleString() + ", the server status code is " + xhr.status;
-        }
-      });
 	});
 });
 
@@ -80,7 +59,7 @@ function convert(data, searchText){
 		converteData.push(res);
 	} 
 	return converteData;
-}
+};
 
 function cellValue(cellId){
 	var cellContent = document.getElementById("" + cellId +"").innerHTML;
@@ -91,7 +70,7 @@ function cellValue(cellId){
 	//clear datatable
 	$("#clear").click();
 	
-	$('#loadingmessage').show();  // show the loading message. 
+	$('#processing-modal').modal('show');  // show the loading message. 
 	$.ajax({
 	  dataType: "jsonp",
 	  url: queryUrl,
@@ -110,12 +89,13 @@ function cellValue(cellId){
 			    ]
 			});
 			
-			$('#loadingmessage').hide();  // hide the loading message.
+			// hide the loading message.
+			$('#processing-modal').modal('hide');
 			document.getElementById("resDescription").innerHTML = 'About:  ' + cellContent;
 			document.getElementById("saveForm").style.visibility="hidden";
 		}
 	});
-}
+};
 
 function longTextFormater(text, searchText){
 	var searchText = document.getElementById("query").value;
@@ -135,18 +115,16 @@ function longTextFormater(text, searchText){
 		var result = text;
 	}
 	return result;
-}
+};
 
 function showRelations() {
-	//document.getElementById("saveRes").innerHTML = "";
-	document.getElementById("saveForm").style.visibility="hidden";
 	var oTable = $('#results').dataTable(); 
     var bVis = oTable.fnSettings().aoColumns[0].bVisible;
     var bVis = oTable.fnSettings().aoColumns[2].bVisible;
     oTable.fnSetColumnVis( 0, bVis ? false : true );
     oTable.fnSetColumnVis( 2, bVis ? false : true );
     document.getElementById("saveForm").style.visibility="hidden";
-}
+};
 
 function getAllRes(){
 	var searchText = document.getElementById("query").value;
@@ -154,7 +132,7 @@ function getAllRes(){
 	//clear datatable
 	$("#clear").click();
 	executeMoreQuery(searchText, endpointURL);
-}
+};
 
 function getTableHeaders(headerVars) {
 	var trHeaders = $("<tr></tr>");
@@ -162,7 +140,7 @@ function getTableHeaders(headerVars) {
 		trHeaders.append( $("<th bgcolor= '#FFFFFF'>" + headerVars[i] + "</th>") );
 	}
 	return trHeaders;
-}
+};
 
 function getTableRow(headerVars, rowData) {
 	var tr = $("<tr></tr>");
@@ -170,7 +148,7 @@ function getTableRow(headerVars, rowData) {
 		tr.append(getTableCell(headerVars[i], rowData));
 	}
 	return tr;
-}
+};
 
 function getTableCell(fieldName, rowData) {
 	var td = $("<td bgcolor= '#FFFFFF'></td>");
@@ -185,7 +163,4 @@ function getTableCell(fieldName, rowData) {
 		td.html(fieldData["value"]);
 	}
 	return td;
-}
-
-            
-  //]]>
+};

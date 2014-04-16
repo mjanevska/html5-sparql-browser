@@ -65,8 +65,6 @@ function Save(){
     var storeTable = savedItems[tableID];
     var trip = storeTable[3];
     var st = ArrtoTstore(trip);
-    //console.log(st.st);
-    //trip = TstoretoArr(st);
 
     var par = $(this).parent().parent(); //tr
     var tdEntity = par.children("td:nth-child(1)");
@@ -98,11 +96,10 @@ function Save(){
 };
 
 function Delete(){
-
-    var result = confirm("Delete table row?");
     var tableID = $(this).closest('table').attr('id');
-    if (result==true) {
-
+    $('#mydelModal').modal('show');
+    $('#mydelModal button.btn-primary').click(function(){
+        $('#mydelModal').modal('hide');
         var trID = $(this).closest('tr').attr('id');
         var savedItems = JSON.parse(localStorage.getItem("savedData"));
         var storeTable = savedItems[tableID];
@@ -113,11 +110,10 @@ function Delete(){
         savedItems[tableID] = storeTable;
         localStorage.setItem("savedData", JSON.stringify(savedItems));
 
-        //getTableDetails(tableID);
+        getTableDetails(tableID);
 
         $(".btnEdit").bind("click", Edit);
-    }
-    getTableDetails(tableID);
+    });
 }
 
 function ArrtoTstore(mArray){
@@ -150,11 +146,9 @@ function TstoretoArr(st){
                 arrItem.push(val);
                 mArray.push(arrItem);
                 arrItem = [];
-                //console.log(subject, property, val);
             }
         }
     }
-    //console.log(mArray);
     return mArray;
 }
 
