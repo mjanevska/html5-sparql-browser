@@ -19,7 +19,6 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	
-	
 </head>
 <body>
 	<div>
@@ -47,14 +46,14 @@
 		</div>
 		<div class="controls" style="margin-top: 10px;">
 			<button id="execSearch" class="btn btn-primary">Search</button>
-			<!-- <button id="checkES" class="btn btn-default">Check endpoint status</button>
-			<button id="clear" class="btn btn-warning">Drop Table</button> -->
+			<!-- <button id="checkES" class="btn btn-default">Check endpoint status</button>-->
+			<button id="clear" class="btn btn-warning">Clear results</button> 
 		</div>
 		<div id="statusOutput">&nbsp;</div>
 		<div class="container">
 			<h3>Results</h3>
 			<a href="storage.html" target="_blank" class="btn btn-primary">Saved</a>
-			<button id="clearSaved" class="btn btn-warning">Clear all saved</button>
+			<button id="clearSaved" class="btn btn-warning">Clear storage</button>
 			<div id="resDescription">&nbsp;</div>	
 			<details>
 		    	<summary>More details</summary>
@@ -70,11 +69,41 @@
 					<button onclick="saveRes()" class="btn btn-default">Save</button>
 				</div>
 		    </details>
+		</br>
 			<table id="results" class="table table-striped" width="100%"> </table>
 		</div>
 	</div>
-	<div id='loadingmessage' style='display:none'>
-		<img src='img/loadinggraphic.gif'/>
+	<!-- Static Modal -->
+	<div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-body">
+	                <div class="text-center">
+	                    <img src="img/loadinggraphic.gif" class="icon" />
+	                    <h5>Processing... <button type="button" class="close" style="float: none;" data-dismiss="modal" aria-hidden="true">×</button></h5>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
 	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="width: 400px;">
+	    <div class="modal-content">
+	      <div class="modal-header"  style="width: 400px; height: 60px;">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h5 style="font-family:Trebuchet MS;" class="modal-title" id="myModalLabel">Notification</h5>
+	      </div>
+	      <div class="modal-body"  style="width: 400px; height: 50px;">
+	      	<h5 style="font-family:Trebuchet MS;" >Data successfully saved.</h5>
+	      </div>
+	      <div class="modal-footer" style="width: 400px; height: 60px;">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<!--<button type="button" class="btn btn-primary">Save changes</button>-->
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 </body>
 </html>

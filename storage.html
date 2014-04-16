@@ -42,5 +42,77 @@
 	<div id='loadingmessage' style='display:none'>
 		<img src='img/loadinggraphic.gif'/>
 	</div>
+
+	<div id="mydeleteModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header"  style="width: 400px; height: 60px;">
+	        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        		<h5 style="font-family:Trebuchet MS;" class="modal-title" id="myModalLabel">Notification</h5>
+	     		</div>
+                <div class="modal-body"  style="width: 400px; height: 50px;">
+	      			<h5 style="font-family:Trebuchet MS;" >Do you want to delete selected table?</h5>
+	      		</div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+	                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                    <button type="submit" class="btn btn-primary" onclick="goBack()">Delete</button>
+                	</div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dalog -->
+	</div><!-- /.modal -->
+
+	<div id="mydelModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mydelModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header"  style="width: 400px; height: 60px;">
+	        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        		<h5 style="font-family:Trebuchet MS;" class="modal-title" id="myModalLabel">Notification</h5>
+	     		</div>
+                <div class="modal-body"  style="width: 400px; height: 50px;">
+	      			<h5 style="font-family:Trebuchet MS;" >Do you want to delete selected row?</h5>
+	      		</div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+	                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                    <button type="submit" class="btn btn-primary">Delete</button>
+                	</div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dalog -->
+	</div><!-- /.modal -->
+
+	<!-- Static Modal -->
+<div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="img/loadinggraphic.gif" class="icon" />
+                    <h5>Processing... <button type="button" class="close" style="float: none;" data-dismiss="modal" aria-hidden="true">×</button></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="width: 400px;">
+	    <div class="modal-content">
+	      <div class="modal-header"  style="width: 400px; height: 60px;">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h5 style="font-family:Trebuchet MS;" class="modal-title" id="myModalLabel">Notification</h5>
+	      </div>
+	      <div class="modal-body"  style="width: 400px; height: 50px;">
+	      	<h5 style="font-family:Trebuchet MS;" >Data successfully updated.</h5>
+	      </div>
+	      <div class="modal-footer" style="width: 400px; height: 60px;">
+	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="goBack()">Close</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 </body>
 </html>
