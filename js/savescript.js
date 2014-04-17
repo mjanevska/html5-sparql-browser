@@ -64,7 +64,7 @@ function getTableDetails(index){
 		table+='<tr id="'+y+'"><td>'+triples[y][0]+'  </td><td>'+triples[y][1]+'</td><td>'+valueOftriple+'</td><td><img src="img/edit.png" class="btnEdit"/><img src="img/delete.png" class="btnDelete"/></td></tr>';
 	}
 	table+='<tr><td colspan="4"><button class="btn btn-primary btn-sm" onclick = "goBack()">Back</button>';
-	table+='&nbsp;<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "3">RDF/XML</option><option value = "4">Triples</option><option value = "5">NTriples</option><option value = "6">CSV</option><option value = "7">TSV</option></select>&nbsp;<button class="btn btn-info btn-sm" id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
+	table+='&nbsp;<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "3">RDF/XML</option><option value = "4">Turtle</option><option value = "5">NTriples</option><option value = "6">CSV</option><option value = "7">TSV</option></select>&nbsp;<button class="btn btn-info btn-sm" id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
 	table +='</table><br>';	
 	document.getElementById("objectSaved").innerHTML = table;
 	document.getElementById("newPage").innerHTML ="";
@@ -227,7 +227,7 @@ function showFormatData(index){
  		var resTSV = resCSV.replace(/\s*","\s*/g, '"\t"');
  		document.getElementById("textArea").value = resTSV;
  	}
- 	else if(choice === "Triples"){
+ 	else if(choice === "Turtle"){
 		var jsonOb = new JsonTurtle;
 		// parse JSON object and returns Turtle string
 		var turtle_string = jsonOb.parsej(JSON.parse(json),"\n",'');
