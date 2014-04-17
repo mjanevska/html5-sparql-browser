@@ -64,7 +64,7 @@ function getTableDetails(index){
 		table+='<tr id="'+y+'"><td>'+triples[y][0]+'  </td><td>'+triples[y][1]+'</td><td>'+valueOftriple+'</td><td><img src="img/edit.png" class="btnEdit"/><img src="img/delete.png" class="btnDelete"/></td></tr>';
 	}
 	table+='<tr><td colspan="4"><button class="btn btn-primary btn-sm" onclick = "goBack()">Back</button>';
-	table+='&nbsp;<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "2">JTriples</option><option value = "3">CSV</option><option value = "4">TSV</option></select>&nbsp;<button class="btn btn-info btn-sm" id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
+	table+='&nbsp;<select id="formats"><option value = "1">JSON</option><option value = "2">XML</option><option value = "3">RDF/XML</option><option value = "4">Triples</option><option value = "5">NTriples</option><option value = "6">CSV</option><option value = "7">TSV</option></select>&nbsp;<button class="btn btn-info btn-sm" id="showFormatData" onclick="showFormatData('+index+')">Show</button></td></tr>';
 	table +='</table><br>';	
 	document.getElementById("objectSaved").innerHTML = table;
 	document.getElementById("newPage").innerHTML ="";
@@ -227,21 +227,32 @@ function showFormatData(index){
  		var resTSV = resCSV.replace(/\s*","\s*/g, '"\t"');
  		document.getElementById("textArea").value = resTSV;
  	}
- 	else if(choice === "JTriples"){
- 		//JSON2JT returns array
- 		var resJTriples = JSON2JT(json);
- 		document.getElementById("textArea").value = JSON.stringify(resJTriples);
+ 	else if(choice === "Triples"){
+		var jsonOb = new JsonTurtle;
+		// parse JSON object and returns Turtle string
+		var turtle_string = jsonOb.parsej(JSON.parse(json),"\n",'');
+		document.getElementById("textArea").value = turtle_string;
+ 	}
+ 	else if(choice === "NTriples"){
+		json2ntriples(index);
  	}
  	else if(choice === "XML"){
- 		//JSON2JT returns array
- 		var resJTriples = JSON2XML(JSON.parse(json),'\n');
- 		document.getElementById("textArea").value = resJTriples;
+ 		var x2js = new X2JS();
+ 		document.getElementById("textArea").value = unescapeXmlChars(x2js.json2xml_str($.parseJSON(json)));
+
+ 	}
+ 	else if(choice === "RDF/XML"){
+ 		json2rdfxml(index);
  	}
  	else {
  		document.getElementById("textArea").value = "Test";
  	}
  	document.getElementById("saveFile").disabled = false;
 }
+
+function unescapeXmlChars(str) {
+		return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&#x2F;/g, '\/');
+	}
 
 function JSON2CSV(jsonStrObj){
 	var jsonArr = formatSaveData(JSON.parse(jsonStrObj));
@@ -252,55 +263,60 @@ function JSON2CSV(jsonStrObj){
 	return resCSV;
 };
 
-function JSON2JT(jsonStrObj){
-	var jsonArr = formatSaveData(JSON.parse(jsonStrObj));
-	var resJTriples = [];
-	for(var i=0; i<jsonArr.length; i++){
-		var newItem = {};
-		newItem["s"] = jsonArr[i][0];
-		newItem["p"] = jsonArr[i][1];
-		newItem["o"] = jsonArr[i][2];
-		resJTriples.push(newItem);
-	}
-	return resJTriples;
+function json2rdfxml(index){
+	var savedItems = JSON.parse(localStorage.getItem("savedData"));
+    var storeTable = savedItems[index];
+    var trip = storeTable[3];
+    searchText = storeTable[4];
+    endpointURL = storeTable[5];
+    var dbpediaQuery = "select reduced ?s ?p ?o where {?s ?p ?o . ?p ?k ?type . filter ( regex(?o, \"" + searchText +"\", \"i\") && (?type = owl:DatatypeProperty || ?type = rdf:Property))} LIMIT 1000";
+    var dbpediaQueryUrl = endpointURL + "?default-graph-uri=http%3A%2F%2Fdbpedia.org&query="+$.URLEncode(dbpediaQuery)+"&format=rdf+xml&timeout=30000&debug=on";
+    var query = "select reduced ?s ?p ?o where { ?s ?p ?o. filter(regex(?o, \"" + searchText +"\", \"i\"))} LIMIT 1000";
+    
+    if(endpointURL.indexOf("http://dbpedia.org/") !== -1) {
+        var queryUrl = dbpediaQueryUrl;
+    }
+    else {
+        var queryUrl = endpointURL + "?default-graph-uri=&query="+$.URLEncode(query)+"&format=rdf+xml&timeout=30000&debug=on";
+    }
+    $('#processing-modal').modal('show');
+    // show the loading message.
+
+    $.ajax({
+      dataType: "text",
+      url: queryUrl,
+      success: function(data) {
+      		$('#processing-modal').modal('hide');
+            document.getElementById("textArea").value = data;
+        }
+    });
 };
 
-function JSON2XML(o, tab) {
-   var toXml = function(v, name, ind) {
-      var xml = "";
-      if (v instanceof Array) {
-         for (var i=0, n=v.length; i<n; i++)
-            xml += ind + toXml(v[i], name, ind+"\t") + "\n";
-      }
-      else if (typeof(v) == "object") {
-         var hasChild = false;
-         xml += ind + "<" + name;
-         for (var m in v) {
-            if (m.charAt(0) == "@")
-               xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
-            else
-               hasChild = true;
-         }
-         xml += hasChild ? ">" : "/>";
-         if (hasChild) {
-            for (var m in v) {
-               if (m == "#text")
-                  xml += v[m];
-               else if (m == "#cdata")
-                  xml += "<![CDATA[" + v[m] + "]]>";
-               else if (m.charAt(0) != "@")
-                   xml += toXml(v[m], m, ind+"\t");
-            }
-            xml += (xml.charAt(xml.length-1)=="\n"?ind:"") + "</" + name + ">";
-         }
-      }
-      else {
-         xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">";
-      }
-      return xml;
-   }, xml="";
-   for (var m in o)
-      xml += toXml(o[m], m, "");
-  	//return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
-   return tab ? xml.replace(/\t\t\t/g, tab) : xml.replace(/\t|\n/g, "");
-}
+function json2ntriples(index){
+	var savedItems = JSON.parse(localStorage.getItem("savedData"));
+    var storeTable = savedItems[index];
+    var trip = storeTable[3];
+    searchText = storeTable[4];
+    endpointURL = storeTable[5];
+    var dbpediaQuery = "select reduced ?s ?p ?o where {?s ?p ?o . ?p ?k ?type . filter ( regex(?o, \"" + searchText +"\", \"i\") && (?type = owl:DatatypeProperty || ?type = rdf:Property))} LIMIT 1000";
+    var dbpediaQueryUrl = endpointURL + "?default-graph-uri=http%3A%2F%2Fdbpedia.org&query="+$.URLEncode(dbpediaQuery)+"&format=n3&timeout=30000&debug=on";
+    var query = "select reduced ?s ?p ?o where { ?s ?p ?o. filter(regex(?o, \"" + searchText +"\", \"i\"))} LIMIT 1000";
+    
+    if(endpointURL.indexOf("http://dbpedia.org/") !== -1) {
+        var queryUrl = dbpediaQueryUrl;
+    }
+    else {
+        var queryUrl = endpointURL + "?default-graph-uri=&query="+$.URLEncode(query)+"&format=n3&timeout=30000&debug=on";
+    }
+    $('#processing-modal').modal('show');
+    // show the loading message.
+
+    $.ajax({
+      dataType: "text",
+      url: queryUrl,
+      success: function(data) {
+      		$('#processing-modal').modal('hide');
+            document.getElementById("textArea").value = data;
+        }
+    });
+};
